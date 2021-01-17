@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
         movementX = movementVector.x;
         movementY = movementVector.y;
+        // mensaje para la consola del Unity
         Debug.Log("Estoy en OnMove ");
     }
 
