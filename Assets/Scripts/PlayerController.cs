@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 0;
+    public float speed = 1;
 
     private Rigidbody rb;
 
@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    /**
+     *  Evento Input System
+     **/
     private void OnMove(InputValue movementValue)
     {
         Vector2 movementVector = movementValue.Get<Vector2>();
@@ -27,14 +30,24 @@ public class PlayerController : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
         // mensaje para la consola del Unity
-        Debug.Log("Estoy en OnMove ");
+        // Debug.Log("Estoy en OnMove ");
     }
 
     private void FixedUpdate()
     {
+        // para el teclado
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
-
         rb.AddForce(movement * speed);
+
+        // recogemos los datos del acelerometro
+        Vector3 dir = Vector3.zero;
+        dir.x = -Input.acceleration.y;
+        dir.z = Input.acceleration.x;
+        if (dir.sqrMagnitude > 1)
+            dir.Normalize();
+        
+        dir *= Time.deltaTime;
+        transform.Translate(dir * speed);
     }
 
 }
